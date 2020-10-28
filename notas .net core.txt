@@ -1,0 +1,44 @@
+*net core es la evolucion de .net(c), es un framework mvc.
+*entity frameworks es un ORM(mode object relationship, modelado de objetos relacional), para manejar tablas relacionales prog. funcional -> como clases POO
+
+
+/*PARA USAR CON VSCODE*/
+*para crear un scaffold .net core typo api:(ejecutar en la carpeta vacia) dotnet new webapi
+AGREGAR EntitytFrameworks y otros:
+
+dotnet add package Microsoft.EntityFrameworkCore  
+
+dotnet add package Microsoft.EntityFrameworkCore.Tools 
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer  
+
+
+
+/*para basede datos( y la creacion de migraciones(clases),  a partir de los modelos en /Models y el ApiContext => migraciones Clases y tablas en la base de datos) postgre en este caso*/
+
+*primero crear los modelos(y apiContext) en /Models (esto es firstcode a difefrencia del Ejemplo de VentaReal primero se hacen las tablas a partir de estas  los modelos y contexto con sqlServer te acuerdas?)
+
+*instalar: 
+	-dotnet tool install --global dotnet-ef
+	-dotnet add package Microsoft.EntityFrameworkCore
+	-dotnet add package Microsoft.EntityFrameworkCore.Tools 
+	-dotnet add package Microsoft.EntityFrameworkCore.SqlServer(o Npgsql.EntityFrameworkCore.PostgreSQL)
+			
+*instalar el paquete: dotnet add package Microsoft.Extensions.SecretManager.Tools
+*ejecutar el la consola esto: dotnet user-secrets set secretConnectionString "User ID=pdev;Password=root;Server=localhost;Port=5432;Database=sight.api;Integrated Security=true;Pooling=true;"
+
+
+*ejecutar para crear las migraciones: dotnet ef migrations add InitialMigration
+
+* en Startup.cs integrar el string con la clave secreta ("secretCon	nectionString") asi:
+ public void ConfigureServices(IServiceCollection services)
+    {
+      //dotnet user-secrets set secretConnectionString "User ID=pdev;Password=root;Server=localhost;Port=5432;Database=sight.api;Security=true;Pooling=true;"
+      _connectionString = Configuration["secretConnectionString"];<= esta es la string secret creada.
+	....
+
+*luego: dotnet ef database update (para crear la data base y tablas aartir de los modelos y ApiContext que estan en /Models)
+
+
+*dotnet clean / dotnet build  (tambien se puede utilizar el debug ctr+shift+d en vscode, usando los break points)
+*dotnet run
