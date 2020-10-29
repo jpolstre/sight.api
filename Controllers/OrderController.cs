@@ -42,7 +42,7 @@ namespace sight.api.Controllers
       return Ok(response);//Ok devuelve el objeto transformado en json.
     }
 
-    //GET api/order/ByState -> agrupar por estado(Los estados de EEUU,  devuelve  {"CO":2345, "CA":567656,..eetc}).
+    //GET api/order/bystate -> agrupar por estado(Los estados de EEUU,  devuelve  {"CO":2345, "CA":567656,..eetc}).
     [HttpGet("ByState")]
     public IActionResult ByState()
     {
@@ -61,7 +61,7 @@ namespace sight.api.Controllers
 
       return Ok(grupedResult);
     }
-    //GET api/order/ByCustomer/3 -> agrupar por estado(Los estados de EEUU,  devuelve  {"ConfortTransit":2345, "PeakBakery":567656,..eetc}).
+    //GET api/order/bycustomer/3 -> agrupar por estado(Los estados de EEUU,  devuelve  {"ConfortTransit":2345, "PeakBakery":567656,..eetc}).
     [HttpGet("ByCustomer/{n}")]
     public IActionResult ByCustomer(int n)
     {
@@ -82,6 +82,20 @@ namespace sight.api.Controllers
       return Ok(grupedResult);
     }
 
+    /*GET api/order/getorder/571 =>
+        {
+        "id": 571,
+        "customer": {
+            "id": 8,
+            "name": "FamilyFoods",
+            "email": "familyfoods@contact.com",
+            "state": "NH"
+        },
+        "total": 343,
+        "placed": "2020-10-02T03:22:28.85805",
+        "completed": "2020-10-15T03:22:28.85805"
+        }
+    */
     [HttpGet("GetOrder/{id}", Name = "GetOrder")]
     public IActionResult GetOrder(int id)
     {
