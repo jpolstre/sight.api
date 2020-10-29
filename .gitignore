@@ -1,4 +1,4 @@
-/bin
+#/bin
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
