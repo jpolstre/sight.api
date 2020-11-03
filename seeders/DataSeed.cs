@@ -7,7 +7,7 @@ using System.Linq;
 using sight.api.Models;
 
 
-namespace sight.api
+namespace sight.api.seeders
 {
   public class DataSeed
   {

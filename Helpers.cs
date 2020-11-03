@@ -130,6 +130,11 @@ namespace sight.api
 
     }
 
+    //this object obj,
+    // internal static bool HasProperty(object obj, string propertyName)
+    // {
+    //   return obj.GetType().GetProperty(propertyName) != null;
+    // }
 
   }
 }

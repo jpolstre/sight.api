@@ -5,6 +5,8 @@ using sight.api.Models;
 
 using sight.api;
 using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace sight.api.Controllers
 {
@@ -19,12 +21,108 @@ namespace sight.api.Controllers
       _ctx = ctx;
     }
 
+
+    public static Expression<Func<Order, Object>> orderExp(string field)
+    {
+      Expression<Func<Order, Object>> OrderByExpression = null;
+      switch (field)
+      {
+        case "Id":
+          OrderByExpression = o => o.Id;
+          break;
+        case "Customer":
+          OrderByExpression = o => o.Customer.Name;
+          break;
+        case "Total":
+          OrderByExpression = o => o.Total;
+          break;
+        case "Placed":
+          OrderByExpression = o => o.Placed;
+          break;
+        default:
+          OrderByExpression = o => o.Completed;
+          break;
+      }
+      return OrderByExpression;
+
+    }
+
     //GET api/order/pageNumber/pageSize
 
-    [HttpGet("{pageIndex:int}/{pageSize:int}")]
-    public IActionResult Get(int pageIndex, int pageSize)
+    [HttpGet("{pageIndex:int}/{pageSize:int}/{filterTerm?}/{orderField?}/{directionSort?}")]
+    public IActionResult Get(int pageIndex, int pageSize, string filterTerm, string orderField, string directionSort)
     {
-      var data = _ctx.Orders.Include(o => o.Customer).OrderByDescending(c => c.Placed);
+      Console.WriteLine("salida:" + directionSort);
+
+
+
+      // get the expression from the sort field passed in
+
+
+      System.Collections.Generic.List<Order> data;
+
+      if (!String.IsNullOrEmpty(filterTerm) && filterTerm != "undefined")
+      {
+        if (!String.IsNullOrEmpty(orderField) && !String.IsNullOrEmpty(directionSort))
+        {
+          var orderexp = orderExp(orderField);
+          // && typeof(Order).GetType().GetProperty(orderField) != null
+          if (directionSort == "ASC")
+          {
+            data = _ctx.Orders
+            .Include(o => o.Customer)
+            .Where(o =>
+              o.Customer.Name.ToLower().Contains(filterTerm.ToLower())
+            ).OrderBy(orderexp).ToList();//es como Order[filterTerm]
+          }
+          else
+          {
+            data = _ctx.Orders
+            .Include(o => o.Customer)
+            .Where(o =>
+              o.Customer.Name.ToLower().Contains(filterTerm.ToLower())
+            ).OrderByDescending(orderexp).ToList();
+          }
+        }
+        else
+        {
+          data = _ctx.Orders
+          .Include(o => o.Customer)
+          .Where(o =>
+            o.Customer.Name.ToLower().Contains(filterTerm.ToLower())
+          ).ToList();
+        }
+      }
+      else
+      {
+        Console.WriteLine("nadas");
+        // data = _ctx.Orders.Include(o => o.Customer).OrderByDescending(c => c.Placed);
+
+
+        if (!String.IsNullOrEmpty(orderField) && !String.IsNullOrEmpty(directionSort))
+        {
+          var orderexp = orderExp(orderField);
+          // && typeof(Order).GetType().GetProperty(orderField) != null
+          if (directionSort == "ASC")
+          {
+            data = _ctx.Orders
+            .Include(o => o.Customer)
+            .OrderBy(orderexp).ToList();
+          }
+          else
+          {
+            data = _ctx.Orders
+            .Include(o => o.Customer)
+            .OrderByDescending(orderexp).ToList();
+          }
+        }
+        else
+        {
+          data = _ctx.Orders.Include(o => o.Customer).ToList();
+        }
+
+      }
+
 
       //En otras palabras  PaginationResponse<Order>, dice de que tipo sera data en este caso:  IOrderedQueryable<Order> = IEnumerable<T> en la clase
       var page = new PaginationResponse<Order>(data, pageIndex, pageSize);

@@ -1,0 +1,5 @@
+D:\ANGULAR\sight.api\obj\Debug\netcoreapp2.2\sight.api.csprojAssemblyReference.cache
+D:\ANGULAR\sight.api\obj\Debug\netcoreapp2.2\sight.api.AssemblyInfoInputs.cache
+D:\ANGULAR\sight.api\obj\Debug\netcoreapp2.2\sight.api.AssemblyInfo.cs
+D:\ANGULAR\sight.api\obj\Debug\netcoreapp2.2\sight.api.csproj.CoreCompileInputs.cache
+D:\ANGULAR\sight.api\obj\Debug\netcoreapp2.2\UserSecretsAssemblyInfo.cs

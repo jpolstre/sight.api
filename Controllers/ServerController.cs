@@ -32,6 +32,7 @@ namespace sight.api.Controllers
       return Ok(server);
     }
 
+    // PUT https://localhost:5001/api/server/1
     [HttpPut("{id}")]
     public IActionResult Message(int id, [FromBody] ServerMessage msg)
     {
